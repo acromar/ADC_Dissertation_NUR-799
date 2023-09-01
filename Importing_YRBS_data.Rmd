@@ -1,0 +1,112 @@
+---
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+# Importing the original 2009 to 2019 YRBSS data
+# Aaron Cromar
+# 08-30-2023
+
+---
+title: "Importing YRBS Data"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+# Loading R Packages
+```{r include = FALSE}
+library(conflicted)
+library(rmarkdown)
+library(tidyverse)
+library(haven)
+library(foreign)
+library(knitr)
+library(usethis)
+```
+
+# Importing .dat files into R for YRBS 2019
+```{r}
+raw2019YRBS <- read_sav("C:/Users/acrom/Google Drive/ASU Files/ASU WORK PRODUCT_CONHI Program/ASU-NUR CE Prep/YRBS Datasets/ADC Dissertation-YRBS Data Sets/2019YRBS-SPSS.sav")
+View(raw2019YRBS)
+```
+
+# Print Head and Summary of 2019 YRBS Data Frame
+```{r}
+print("Top 6 Entries of data frame:")
+head(raw2019YRBS)
+print("summary:")
+summary(raw2019YRBS)
+```
+
+# Importing .dat files into R for YRBS 2017
+```{r}
+raw2017YRBS <- read_sav("C:/Users/acrom/Google Drive/ASU Files/ASU WORK PRODUCT_CONHI Program/ASU-NUR CE Prep/YRBS Datasets/ADC Dissertation-YRBS Data Sets/2017YRBS-SPSS.sav")
+View(raw2017YRBS)
+```
+
+# Print Head and Summary of 2017 YRBS Data Frame
+```{r}
+print("Top 6 Entries of data frame:")
+head(raw2017YRBS)
+print("summary:")
+summary(raw2017YRBS)
+```
+
+# Importing .dat files into R for YRBS 2015
+```{r}
+raw2015YRBS <- read_sav("C:/Users/acrom/Google Drive/ASU Files/ASU WORK PRODUCT_CONHI Program/ASU-NUR CE Prep/YRBS Datasets/ADC Dissertation-YRBS Data Sets/2015YRBS-SPSS.sav")
+View(raw2015YRBS)
+```
+
+# Print Head and Summary of 2015 YRBS Data Frame
+```{r}
+print("Top 6 Entries of data frame:")
+head(raw2015YRBS)
+print("summary:")
+summary(raw2015YRBS)
+```
+
+# Importing .dat files into R for YRBS 2013
+```{r}
+raw2013YRBS <- read_sav("C:/Users/acrom/Google Drive/ASU Files/ASU WORK PRODUCT_CONHI Program/ASU-NUR CE Prep/YRBS Datasets/ADC Dissertation-YRBS Data Sets/2013YRBS-SPSS.sav")
+View(raw2013YRBS)
+```
+
+# Print Head and Summary of 2013 YRBS Data Frame
+```{r}
+print("Top 6 Entries of data frame:")
+head(raw2013YRBS)
+print("summary:")
+summary(raw2013YRBS)
+```
+
+# Importing .dat files into R for YRBS 2011
+```{r}
+raw2011YRBS <- read_sav("C:/Users/acrom/Google Drive/ASU Files/ASU WORK PRODUCT_CONHI Program/ASU-NUR CE Prep/YRBS Datasets/ADC Dissertation-YRBS Data Sets/2011YRBS-SPSS.sav")
+View(raw2011YRBS)
+```
+
+# Print Head and Summary of 2011 YRBS Data Frame
+```{r}
+print("Top 6 Entries of data frame:")
+head(raw2011YRBS)
+print("summary:")
+summary(raw2011YRBS)
+```
+
+# Importing .dat files into R for YRBS 2009
+```{r}
+raw2009YRBS <- read_sav("C:/Users/acrom/Google Drive/ASU Files/ASU WORK PRODUCT_CONHI Program/ASU-NUR CE Prep/YRBS Datasets/ADC Dissertation-YRBS Data Sets/2009YRBS-SPSS.sav")
+View(raw2009YRBS)
+```
+
+# Print Head and Summary of 2009 YRBS Data Frame
+```{r}
+print("Top 6 Entries of data frame:")
+head(raw2009YRBS)
+print("summary:")
+summary(raw2009YRBS)
+```
