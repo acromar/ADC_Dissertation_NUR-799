@@ -1,23 +1,20 @@
----
-output:
-  word_document: default
-  html_document: default
-  pdf_document: default
----
 # Importing the original 2009 to 2019 YRBSS data
 # Aaron Cromar
-# 08-30-2023
+# 08-31-2023
 
 ---
 title: "Importing YRBS Data"
+author: "Aaron Cromar"
+date: "2023-08-31"
 output:
   pdf_document: default
   html_document: default
+  word_document: default
 ---
 
 
 # Loading R Packages
-```{r include = FALSE}
+```{r setup, include = FALSE}
 library(conflicted)
 library(rmarkdown)
 library(tidyverse)
@@ -25,6 +22,7 @@ library(haven)
 library(foreign)
 library(knitr)
 library(usethis)
+library(janitor)
 ```
 
 # Importing .dat files into R for YRBS 2019
@@ -110,3 +108,11 @@ head(raw2009YRBS)
 print("summary:")
 summary(raw2009YRBS)
 ```
+
+# Summary of Raw 2009-2019 YRBS Data Waves
+## Raw2019YRBS: 13677 x 235
+## Raw2017YRBS: 14765 x 240
+## Raw2015YRBS: 15624 x 239
+## Raw2013YRBS: 13583 x 213
+## Raw2011YRBS: 15425 x 207
+## Raw2009YRBS: 16410 x 208
