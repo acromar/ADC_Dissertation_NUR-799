@@ -1,0 +1,336 @@
+# Cleaning Raw 2019 YRBSS data
+# Aaron Cromar
+# 09-01-2023
+
+---
+title: "Cleaning 2019 YRBS Dataset"
+author: "Aaron Cromar"
+date: "2023-09-01"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+# The following script aims to generate a clean data set for YRBS 2019 using the
+## dichotomous variables
+## categorical variables
+
+# Loading R Packages
+
+```{r setup, include=FALSE}
+library(conflicted)
+library(rmarkdown)
+library(tidyverse)
+library(haven)
+library(foreign)
+library(knitr)
+library(tidyREDCap)
+```
+
+# Loading Raw YRBS 2019 Data
+
+```{r}
+load("data/raw2019YRBS.rda")
+```
+
+# Loading Raw YRBS 2019 Dataframe
+
+```{r}
+raw_2019YRBS_df <- tidyREDCap::drop_labels(raw2019YRBS)
+```
+
+# 13677 x 235
+
+# Recoding the 2019 YRBS Binary Factors
+### This function is created to recode binary factors from 1 and 2 to 0 and 1.
+
+```{r}
+RecodeBinary <- function(x) {
+  x <- case_when(
+    x == 1 ~ 1,
+    x == 2 ~ 0,
+    TRUE ~ NA
+  )
+}
+```
+
+## The predictors will be the dichotomous and categorical variables from the YRBS.
+
+## The dichotomous and categorical variables present the percentage of students answering the predetermined response(s) of interest (ROI). Students answering the ROI(s)are in the numerator. The denominator is either all students or a subset of students who have indicated they participate in a selected activity or behavior.
+
+## Students must have provided valid data to be included in any dichotomous and categorical variable calculations.
+
+#Tidying Raw 2019 YRBS Dataframe
+
+```{r}
+clean_2019YRBS <-
+  raw_2019YRBS_df |>
+  select(weight, stratum, psu, Q1, Q2, Q3, Q4, Q5, raceeth, Q16:Q29, Q66, Q79:Q80, QN16:QN29, QN79:QN80) |>
+  mutate(
+    Sex = case_when(
+      Q2 == 2 ~ "Male",
+      Q2 == 1 ~ "Female",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    Race = case_when(
+      raceeth == 1 ~ "Am Indian_Alaska Native",
+      raceeth == 2 ~ "Asian",
+      raceeth == 3 ~ "Black or African American",
+      raceeth == 4 ~ "Native Hawaiian_Other PI",
+      raceeth == 5 ~ "White",
+      raceeth == 6 ~ "Hispanic_Latino",
+      raceeth == 7 ~ "Multiple_Hispanic",
+      raceeth == 8 ~ "Multiple_NonHispanic",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    Age = case_when(
+      Q1 == 1 ~ "12yrs",
+      Q1 == 2 ~ "13yrs",
+      Q1 == 3 ~ "14yrs",
+      Q1 == 4 ~ "15yrs",
+      Q1 == 5 ~ "16yrs",
+      Q1 == 6 ~ "17yrs",
+      Q1 == 7 ~ "18yrs",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    Grade = case_when(
+      Q3 == 1 ~ "9th",
+      Q3 == 2 ~ "10th",
+      Q3 == 3 ~ "11th",
+      Q3 == 4 ~ "12th",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    Hispanic_Latino = case_when(
+      Q4 == 2 ~ "No",
+      Q4 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA1_SchoolInjury = case_when(
+      Q16 == 1 ~ "0 times",
+      Q16 == 2 ~ "1 time",
+      Q16 == 3 ~ "2 or 3 times",
+      Q16 == 4 ~ "4 or 5 times",
+      Q16 == 5 ~ "6 or 7 times",
+      Q16 == 6 ~ "8 or 9 times",
+      Q16 == 7 ~ "10 or 11 times",
+      Q16 == 8 ~ "12 or more times",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA10_SchoolInjury = case_when(
+      QN16 == 2 ~ "No",
+      QN16 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA2_PhysicalFight = case_when(
+      Q17 == 1 ~ "0 times",
+      Q17 == 2 ~ "1 time",
+      Q17 == 3 ~ "2 or 3 times",
+      Q17 == 4 ~ "4 or 5 times",
+      Q17 == 5 ~ "6 or 7 times",
+      Q17 == 6 ~ "8 or 9 times",
+      Q17 == 7 ~ "10 or 11 times",
+      Q17 == 8 ~ "12 or more times",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA11_PhysicalFight = case_when(
+      QN17 == 2 ~ "No",
+      QN17 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA3_SchoolPhysicalFight = case_when(
+      Q18 == 1 ~ "0 times",
+      Q18 == 2 ~ "1 time",
+      Q18 == 3 ~ "2 or 3 times",
+      Q18 == 4 ~ "4 or 5 times",
+      Q18 == 5 ~ "6 or 7 times",
+      Q18 == 6 ~ "8 or 9 times",
+      Q18 == 7 ~ "10 or 11 times",
+      Q18 == 8 ~ "12 or more times",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA12_SchoolPhysicalFight = case_when(
+      QN18 == 2 ~ "No",
+      QN18 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA4_ForcedSexualIntercourse = case_when(
+      Q19 == 2 ~ "No",
+      Q19 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA13_ForcedSexualIntercourse = case_when(
+      QN19 == 2 ~ "No",
+      QN19 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA5_SexualViolence = case_when(
+      Q20 == 1 ~ "0 times",
+      Q20 == 2 ~ "1 time",
+      Q20 == 3 ~ "2 or 3 times",
+      Q20 == 4 ~ "4 or 5 times",
+      Q20 == 5 ~ "6 or more times",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA14_SexualViolence = case_when(
+      QN20 == 2 ~ "No",
+      QN20 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA6_SexualPartnerAbuse = case_when(
+      Q21 == 1 ~ "No Dating",
+      Q21 == 2 ~ "0 times",
+      Q21 == 3 ~ "1 time",
+      Q21 == 4 ~ "2 or 3 times",
+      Q21 == 5 ~ "4 or 5 times",
+      Q21 == 6 ~ "6 or more times",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA15_SexualPartnerAbuse = case_when(
+      QN21 == 2 ~ "No",
+      QN21 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA7_PhysicalDatingViolence = case_when(
+      Q22 == 1 ~ "No Dating",
+      Q22 == 2 ~ "0 times",
+      Q22 == 3 ~ "1 time",
+      Q22 == 4 ~ "2 or 3 times",
+      Q22 == 5 ~ "4 or 5 times",
+      Q22 == 6 ~ "6 or more times",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA16_PhyscialDatingViolence = case_when(
+      QN22 == 2 ~ "No",
+      QN22 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA8_SchoolPhysicalBullying = case_when(
+      Q23 == 2 ~ "No",
+      Q23 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA17_SchoolPhysicalBullying = case_when(
+      QN23 == 2 ~ "No",
+      QN23 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA9_CyberBullying = case_when(
+      Q24 == 2 ~ "No",
+      Q24 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    RSA18_Cyberbullying = case_when(
+      QN24 == 2 ~ "No",
+      QN24 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    DEP1_Depression = case_when(
+      Q25 == 2 ~ "No",
+      Q25 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    DEP2_Depression = case_when(
+      QN25 == 2 ~ "No",
+      QN25 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    SRB1_SuicideIdeation = case_when(
+      Q26 == 2 ~ "No",
+      Q26 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    SRB5_SuicideIdeation = case_when(
+      QN26 == 2 ~ "No",
+      QN26 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+   mutate(
+     SRB2_SuicidePlanning = case_when(
+      Q27 == 2 ~ "No",
+      Q27 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    SRB6_SuicidePlanning = case_when(
+      QN27 == 2 ~ "No",
+      QN27 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+   mutate(
+     SRB3_SuicideAttempts = case_when(
+      Q28 == 1 ~ "0 times",
+      Q28 == 2 ~ "1 time",
+      Q28 == 3 ~ "2 or 3 times",
+      Q28 == 4 ~ "4 or 5 times",
+      Q28 == 5 ~ "6 or more times",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    SRB7_SuicideAttempts = case_when(
+      QN28 == 2 ~ "No",
+      QN28 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+   mutate(
+     SRB4_SuicideAttempts_wHCP = case_when(
+      Q29 == 1 ~ "Did not attempt",
+      Q29 == 2 ~ "Yes",
+      Q29 == 3 ~ "No",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    SRB8_SuicideAttempts_wHCP = case_when(
+      QN29 == 2 ~ "No",
+      QN29 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+   mutate(
+     SEX1_SexOrientation = case_when(
+      Q66 == 1 ~ "Heterosexual",
+      Q66 == 2 ~ "Gay or Lesbian",
+      Q66 == 3 ~ "Bisexual",
+      Q66 == 4 ~ "Not sure",
+      TRUE ~ NA_character_)) |>
+   mutate(
+     MDTM1_HoursofTV = case_when(
+      Q79 == 1 ~ "No TV",
+      Q79 == 2 ~ "Less than 1hr per day",
+      Q79 == 3 ~ "1hr per day",
+      Q79 == 4 ~ "2hrs per day",
+      Q79 == 5 ~ "3hrs per day",
+      Q79 == 6 ~ "4hrs per day",
+      Q79 == 7 ~ "5hrs or more per day",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    MDTM3_HoursofTV = case_when(
+      QN79 == 2 ~ "No",
+      QN79 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+   mutate(
+     MDTM2_HoursofComputer_VideoGames = case_when(
+      Q80 == 1 ~ "No Computer_VideoGames",
+      Q80 == 2 ~ "Less than 1hr per day",
+      Q80 == 3 ~ "1hr per day",
+      Q80 == 4 ~ "2hrs per day",
+      Q80 == 5 ~ "3hrs per day",
+      Q80 == 6 ~ "4hrs per day",
+      Q80 == 7 ~ "5hrs or more per day",
+      TRUE ~ NA_character_)) |>
+  mutate(
+    MDTM4_HoursofComputer_VideoGames = case_when(
+      QN80 == 2 ~ "No",
+      QN80 == 1 ~ "Yes",
+      TRUE ~ NA_character_)) |>
+  mutate(across(c(Q1, Q2, Q3, Q4, Q5, raceeth, Q16:Q29, Q79:Q80, QN16:QN29, QN79:QN80), factor))
+view(clean_2019YRBS)
+```
+  
+# 13677 x 80
+
+#Adding 2019 Year Column to the Clean 2019 YRBS Dataframe(.RDS)
+
+```{r}
+clean_2019YRBS$year=2019
+```
+
+# 16410 x 81
+
+#Saving Clean 2019 YRBS Dataframe(.RDS)
+
+```{r}
+saveRDS(file="clean_2019YRBS.rds", clean_2019YRBS)
+```
