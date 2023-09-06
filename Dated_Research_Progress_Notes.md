@@ -3,8 +3,8 @@
 - **Data Download from CDC Website:**
 On this date, all six (6) of the YRBSS data sets for the years 2009, 2011, 2013, 2015, 2017, and 2019 were downloaded from the official Centers for Disease Control and Prevention (CDC) website. The data was obtained using SPSS syntax to ensure accuracy and consistency. Following the download, the files were stored inside the "extData" directory of the repository.
 
-- **Data Transformation to .rda Format:**
-On the same date, the SPSS (.sav) files containing the YRBS data were transformed into a more convenient and efficient format for inclusion in this research project. The data sets were converted to .rda files, making them compatible with R and facilitating their seamless integration into this project's Github repository.
+- **Data Transformation from SPSS (.sav) to R (.rda) Format:**
+On the same date, the SPSS (.sav) files containing the YRBS data were transformed into a more convenient and efficient format for inclusion in this research project. The data sets were converted to R (.rda) files, making them compatible within R and facilitating their seamless integration into this project's Github repository.
 
 - **README File Creation and Documentation:**
 The README file for the repository was created previously on August 30th 2023. 
